@@ -1,0 +1,59 @@
+<T3DataStructure>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<switchableControllerActions>
+						<TCEforms>
+							<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode</label>
+							<onChange>reload</onChange>
+							<config>
+								<type>select</type>
+								<renderType>selectSingle</renderType>
+								<items>
+									<numIndex index="1">
+										<numIndex index="0">LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode.index</numIndex>
+										<numIndex index="1">ImageCopyright->index</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										<numIndex index="0">LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode.indexOnPage</numIndex>
+										<numIndex index="1">ImageCopyright->indexOnPage</numIndex>
+									</numIndex>
+								</items>
+							</config>
+						</TCEforms>
+					</switchableControllerActions>
+					<settings.showEmpty>
+						<TCEforms>
+							<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.showEmpty</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</settings.showEmpty>
+					<settings.includeFileCollections>
+						<TCEforms>
+							<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.includeFileCollections</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</settings.includeFileCollections>
+					<settings.globalCopyright>
+						<TCEforms>
+							<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.globalCopyright</label>
+							<config>
+								<type>input</type>
+								<size>12</size>
+							</config>
+						</TCEforms>
+					</settings.globalCopyright>
+				</el>
+			</ROOT>
+		</sDEF>
+	</sheets>
+</T3DataStructure>

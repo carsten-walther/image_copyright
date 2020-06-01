@@ -1,0 +1,16 @@
+plugin.tx_imagecopyright {
+    view {
+        # cat=tx_imagecopyright/file; type=string; label= Path to template root (FE)
+        templateRootPath = EXT:image_copyright/Resources/Private/Templates/
+        # cat=tx_imagecopyright/file; type=string; label= Path to template partials (FE)
+        partialRootPath = EXT:image_copyright/Resources/Private/Partials/
+        # cat=tx_imagecopyright/file; type=string; label= Path to template layouts (FE)
+        layoutRootPath = EXT:image_copyright/Resources/Private/Layouts/
+    }
+    settings {
+        extensions = jpg, jpeg, png, gif
+        showEmpty = 1
+        includeFileCollections = 1
+        globalCopyright = 599media GmbH
+    }
+}

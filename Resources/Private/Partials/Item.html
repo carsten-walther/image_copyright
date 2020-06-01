@@ -1,0 +1,23 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+	<f:if condition="{resource}">
+		<figure class="copyright">
+			<f:image treatIdAsReference="TRUE" image="{resource}" width="200c" height="133c" />
+			<figcaption>
+				<f:if condition="{resource.properties.copyright}">
+					<f:then>
+						&copy; {resource.properties.copyright}
+					</f:then>
+					<f:else>
+						<f:if condition="{settings.globalCopyright}">
+							<f:then>
+								&copy; {settings.globalCopyright}
+							</f:then>
+						</f:if>
+					</f:else>
+				</f:if>
+			</figcaption>
+		</figure>
+	</f:if>
+
+</html>

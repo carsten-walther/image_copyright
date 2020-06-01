@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" target-language="de" original="messages" date="2018-10-29T14:57:10Z" product-name="image_copyright">
+		<header/>
+		<body>
+			<trans-unit id="general.title">
+				<target>Bildnachweise / Copyright</target>
+				<source>Image copyrights</source>
+			</trans-unit>
+			<trans-unit id="general.description">
+				<target>Übersicht über alle im Seitenbaum oder auf einer einzelnen Seite verwendeten Bilder und deren Copyright-Informationen.</target>
+				<source>Shows all images used in page tree or single page with optional copyright information (alternatively display a global copyright information).</source>
+			</trans-unit>
+			<trans-unit id="flexforms.tabs.general">
+				<target>Allgemein</target>
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="flexforms.tabs.general.mode">
+				<target>Modus</target>
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="flexforms.tabs.general.mode.index">
+				<target>Gesamter Seitenbaum</target>
+				<source>Whole Page Tree</source>
+			</trans-unit>
+			<trans-unit id="flexforms.tabs.general.mode.indexOnPage">
+				<target>Aktuelle Seite</target>
+				<source>Current Page</source>
+			</trans-unit>
+			<trans-unit id="flexforms.tabs.general.showEmpty">
+				<target>Bilder ohne Copyright-Information anzeigen</target>
+				<source>Show images with empty copyright</source>
+			</trans-unit>
+			<trans-unit id="flexforms.tabs.general.includeFileCollections">
+				<target>Bilder aus Dateisammlungen einbeziehen</target>
+				<source>Include files in file collections</source>
+			</trans-unit>
+			<trans-unit id="flexforms.tabs.general.globalCopyright">
+				<target>Globale Copyright-Information</target>
+				<source>Global copyright information</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
