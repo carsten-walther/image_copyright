@@ -1,11 +1,8 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-
-	<f:layout name="Default" />
-
-	<f:section name="main">
-		<f:for each="{images}" as="resource">
-			<f:render partial="Item" arguments="{_all}" />
-		</f:for>
-	</f:section>
-
+<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<f:layout name="Default"/>
+<f:section name="main">
+	<f:for as="resource" each="{images}">
+		<f:render arguments="{_all}" partial="Item"/>
+	</f:for>
+</f:section>
 </html>

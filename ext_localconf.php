@@ -5,12 +5,12 @@ defined('TYPO3_MODE') || die('Access denied.');
 (static function($extName) {
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin (
-        $extensionName = 'Fnn.ImageCopyright',
-        $pluginName = 'ImageCopyright',
-        $controllerActions = [
+        'Fnn.ImageCopyright',
+        'ImageCopyright',
+        [
             'ImageCopyright' => 'index, indexOnPage, first, firstOnPage'
         ],
-        $nonCacheableControllerActions = [
+        [
             'ImageCopyright' => 'index, indexOnPage, first, firstOnPage'
         ]
     );

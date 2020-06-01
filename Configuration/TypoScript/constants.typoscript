@@ -11,6 +11,6 @@ plugin.tx_imagecopyright {
         extensions = jpg, jpeg, png, gif
         showEmpty = 1
         includeFileCollections = 1
-        globalCopyright = 599media GmbH
+        globalCopyright = Example Company
     }
 }

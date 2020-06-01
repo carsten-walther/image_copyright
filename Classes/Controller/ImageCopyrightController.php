@@ -1,13 +1,18 @@
 <?php
-declare(strict_types=1);
 
 namespace Fnn\ImageCopyright\Controller;
 
+use Fnn\ImageCopyright\Resource\FileRepository;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+
 /**
  * Class ImageCopyrightController
+ *
  * @package Fnn\ImageCopyright\Controller
  */
-class ImageCopyrightController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class ImageCopyrightController extends ActionController
 {
     /**
      * @var array
@@ -22,7 +27,7 @@ class ImageCopyrightController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     /**
      * @var bool
      */
-    protected $showEmpty = TRUE;
+    protected $showEmpty = true;
 
     /**
      * @var array
@@ -32,7 +37,7 @@ class ImageCopyrightController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     /**
      * @var bool
      */
-    protected $includeFileCollections = FALSE;
+    protected $includeFileCollections = false;
 
     /**
      * @var array
@@ -45,17 +50,21 @@ class ImageCopyrightController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     protected $fileRepository;
 
     /**
+     * injectFileRepository
+     *
      * @param \Fnn\ImageCopyright\Resource\FileRepository $fileRepository
      */
-    public function injectFileRepository (\Fnn\ImageCopyright\Resource\FileRepository $fileRepository) : void
+    public function injectFileRepository(FileRepository $fileRepository) : void
     {
         $this->fileRepository = $fileRepository;
     }
 
     /**
+     * initializeAction
+     *
      * @return void
      */
-    public function initializeAction () : void
+    public function initializeAction() : void
     {
         $this->cObjectData = $this->configurationManager->getContentObject()->data;
 
@@ -64,23 +73,21 @@ class ImageCopyrightController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
 
         // check if extension is loaded
         foreach ($tempTableFieldConfiguration as $config) {
-            if (!empty($config['extension']) && !empty($config['tableName'])
-                && \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($config['extension'])) {
+            if (!empty($config['extension']) && !empty($config['tableName']) && ExtensionManagementUtility::isLoaded($config['extension'])) {
                 $this->tableFieldConfiguration [] = $config;
             }
         }
 
-        $this->extensions = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->settings['extensions'], TRUE);
-        $this->showEmpty = (bool) $this->settings['showEmpty'];
-        $this->includeFileCollections = (bool) $this->settings['includeFileCollections'];
+        $this->extensions = GeneralUtility::trimExplode(',', $this->settings['extensions'], true);
+        $this->showEmpty = (bool)$this->settings['showEmpty'];
+        $this->includeFileCollections = (bool)$this->settings['includeFileCollections'];
 
         if ($this->includeFileCollections === true) {
             // get table field configuration for file collections
             $tempTableFieldConfigurationForCollections = $this->settings['tableFieldConfigurationForCollections'];
             // check if extension is loaded
             foreach ($tempTableFieldConfigurationForCollections as $config) {
-                if (!empty($config['extension']) && !empty($config['tableName']) && !empty($config['fieldName']) &&
-                    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($config['extension'])) {
+                if (!empty($config['extension']) && !empty($config['tableName']) && !empty($config['fieldName']) && ExtensionManagementUtility::isLoaded($config['extension'])) {
                     $this->tableFieldConfigurationForCollections [] = $config;
                 }
             }
@@ -88,9 +95,11 @@ class ImageCopyrightController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     }
 
     /**
-     * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
+     * indexAction
+     *
+     * @return void
      */
-    public function indexAction () : void
+    public function indexAction() : void
     {
         $this->view->assignMultiple([
             'images' => $this->fileRepository->findAllByRelation($this->tableFieldConfiguration, $this->tableFieldConfigurationForCollections, $this->extensions, $this->showEmpty, null)
@@ -98,9 +107,11 @@ class ImageCopyrightController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionC
     }
 
     /**
-     * @throws \TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException
+     * indexOnPageAction
+     *
+     * @return void
      */
-    public function indexOnPageAction () : void
+    public function indexOnPageAction() : void
     {
         $this->view->assignMultiple([
             'images' => $this->fileRepository->findAllByRelation($this->tableFieldConfiguration, $this->tableFieldConfigurationForCollections, $this->extensions, $this->showEmpty, $this->cObjectData['pid'])

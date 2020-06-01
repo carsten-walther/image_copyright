@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="image_copyright" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
+<svg version="1.1" id="image_copyright" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:#FFFFFF;}
 	.st1{fill:#999999;}
@@ -9,31 +7,30 @@
 	.st3{fill:#5599FF;}
 	.st4{fill:#E8A33D;}
 </style>
-<path class="st0" d="M1,1h14v14H1V1z"/>
-<path class="st1" d="M1,1v14h14V1H1z M2,2h12v12H2V2z"/>
-<path class="st1" d="M8.5,2.9h4v4h-4V2.9z"/>
-<path class="st2" d="M9,3.4h3v3H9V3.4z"/>
-<title>image_gallery-02</title>
-<path class="st1" d="M3.5,2.9h4v4h-4V2.9z"/>
-<path class="st2" d="M4,3.4h3v3H4V3.4z"/>
-<path class="st3" d="M5.1,4.9L4.6,5.7L4,6.4h2.9L6.4,5.9L5.9,5.4L5.7,5.7l0,0L5.1,4.9L5.1,4.9z"/>
-<circle class="st4" cx="6.3" cy="4.7" r="0.4"/>
-<path class="st3" d="M10.1,4.9L9.6,5.7L9,6.4h2.9l-0.5-0.5l-0.5-0.5l-0.3,0.3l0,0L10.1,4.9L10.1,4.9z"/>
-<circle class="st4" cx="11.3" cy="4.7" r="0.4"/>
-<rect x="3.5" y="7" class="st3" width="3.5" height="0.3"/>
-<rect x="3.5" y="7.4" class="st3" width="3" height="0.3"/>
-<rect x="8.5" y="7" class="st3" width="3.5" height="0.3"/>
-<rect x="8.5" y="7.4" class="st3" width="3" height="0.3"/>
-<path class="st1" d="M8.5,8.4h4v4h-4V8.4z"/>
-<path class="st2" d="M9,8.9h3v3H9V8.9z"/>
-<path class="st1" d="M3.5,8.4h4v4h-4V8.4z"/>
-<path class="st2" d="M4,8.9h3v3H4V8.9z"/>
-<path class="st3" d="M5.1,10.4l-0.5,0.7L4,11.9h2.9l-0.5-0.5l-0.5-0.5l-0.3,0.3l0,0L5.1,10.4L5.1,10.4z"/>
-<circle class="st4" cx="6.3" cy="10.2" r="0.4"/>
-<path class="st3" d="M10.1,10.4l-0.5,0.7L9,11.9h2.9l-0.5-0.5l-0.5-0.5l-0.3,0.3l0,0L10.1,10.4L10.1,10.4z"/>
-<circle class="st4" cx="11.3" cy="10.2" r="0.4"/>
-<rect x="3.5" y="12.5" class="st3" width="3.5" height="0.3"/>
-<rect x="3.5" y="12.9" class="st3" width="3" height="0.3"/>
-<rect x="8.5" y="12.5" class="st3" width="3.5" height="0.3"/>
-<rect x="8.5" y="12.9" class="st3" width="3" height="0.3"/>
+    <path class="st0" d="M1,1h14v14H1V1z"/>
+    <path class="st1" d="M1,1v14h14V1H1z M2,2h12v12H2V2z"/>
+    <path class="st1" d="M8.5,2.9h4v4h-4V2.9z"/>
+    <path class="st2" d="M9,3.4h3v3H9V3.4z"/>
+    <path class="st1" d="M3.5,2.9h4v4h-4V2.9z"/>
+    <path class="st2" d="M4,3.4h3v3H4V3.4z"/>
+    <path class="st3" d="M5.1,4.9L4.6,5.7L4,6.4h2.9L6.4,5.9L5.9,5.4L5.7,5.7l0,0L5.1,4.9L5.1,4.9z"/>
+    <circle class="st4" cx="6.3" cy="4.7" r="0.4"/>
+    <path class="st3" d="M10.1,4.9L9.6,5.7L9,6.4h2.9l-0.5-0.5l-0.5-0.5l-0.3,0.3l0,0L10.1,4.9L10.1,4.9z"/>
+    <circle class="st4" cx="11.3" cy="4.7" r="0.4"/>
+    <rect x="3.5" y="7" class="st3" width="3.5" height="0.3"/>
+    <rect x="3.5" y="7.4" class="st3" width="3" height="0.3"/>
+    <rect x="8.5" y="7" class="st3" width="3.5" height="0.3"/>
+    <rect x="8.5" y="7.4" class="st3" width="3" height="0.3"/>
+    <path class="st1" d="M8.5,8.4h4v4h-4V8.4z"/>
+    <path class="st2" d="M9,8.9h3v3H9V8.9z"/>
+    <path class="st1" d="M3.5,8.4h4v4h-4V8.4z"/>
+    <path class="st2" d="M4,8.9h3v3H4V8.9z"/>
+    <path class="st3" d="M5.1,10.4l-0.5,0.7L4,11.9h2.9l-0.5-0.5l-0.5-0.5l-0.3,0.3l0,0L5.1,10.4L5.1,10.4z"/>
+    <circle class="st4" cx="6.3" cy="10.2" r="0.4"/>
+    <path class="st3" d="M10.1,10.4l-0.5,0.7L9,11.9h2.9l-0.5-0.5l-0.5-0.5l-0.3,0.3l0,0L10.1,10.4L10.1,10.4z"/>
+    <circle class="st4" cx="11.3" cy="10.2" r="0.4"/>
+    <rect x="3.5" y="12.5" class="st3" width="3.5" height="0.3"/>
+    <rect x="3.5" y="12.9" class="st3" width="3" height="0.3"/>
+    <rect x="8.5" y="12.5" class="st3" width="3.5" height="0.3"/>
+    <rect x="8.5" y="12.9" class="st3" width="3" height="0.3"/>
 </svg>

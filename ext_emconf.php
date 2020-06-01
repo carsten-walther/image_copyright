@@ -1,33 +1,26 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = array(
+/**
+ * ext_emconf.php
+ */
+
+$EM_CONF[$_EXTKEY] = [
     'title' => 'Image Copyright',
     'description' => 'Image based copyrights',
-    'category' => 'plugin',
+    'category' => 'misc',
+    'version' => '1.0.0',
+    'state' => 'beta',
+    'uploadfolder' => 0,
+    'createDirs' => '',
+    'clearCacheOnLoad' => 0,
     'author' => 'Carsten Walther',
     'author_email' => 'walther.carsten@web.de',
-    'state' => 'beta',
-    'internal' => 0,
-    'uploadfolder' => 0,
-    'createDirs' => 0,
-    'clearCacheOnLoad' => 0,
-    'version' => '9.5.0',
-    'constraints' => array(
-        'depends' => array(
-            'typo3' => '9.5',
-            'filemetadata' => '9.5'
-        ),
-        'conflicts' => array(
-        ),
-        'suggests' => array(
-        ),
-    ),
-    'autoload' => [
-        'classmap' => [
-            'Classes'
+    'author_company' => '',
+    'constraints' => [
+        'depends' => [
+            'typo3' => '10.4.0-10.4.99',
         ],
-        'psr-4' => [
-            'Fnn\\ImageCopyright\\' => 'Classes'
-        ]
+        'conflicts' => [],
+        'suggests' => [],
     ],
-);
+];
