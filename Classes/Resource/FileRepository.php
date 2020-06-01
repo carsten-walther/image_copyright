@@ -1,6 +1,6 @@
 <?php
 
-namespace Fnn\ImageCopyright\Resource;
+namespace Walther\ImageCopyright\Resource;
 
 use PDO;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -15,7 +15,7 @@ use function in_array;
 /**
  * Class FileRepository
  *
- * @package Fnn\ImageCopyright\Resource
+ * @package Walther\ImageCopyright\Resource
  */
 class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
 {

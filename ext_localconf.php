@@ -5,7 +5,7 @@ defined('TYPO3_MODE') || die('Access denied.');
 (static function($extName) {
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin (
-        'Fnn.ImageCopyright',
+        'Walther.ImageCopyright',
         'ImageCopyright',
         [
             'ImageCopyright' => 'index, indexOnPage, first, firstOnPage'

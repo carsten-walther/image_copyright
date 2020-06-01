@@ -1,8 +1,8 @@
 <?php
 
-namespace Fnn\ImageCopyright\Controller;
+namespace Walther\ImageCopyright\Controller;
 
-use Fnn\ImageCopyright\Resource\FileRepository;
+use Walther\ImageCopyright\Resource\FileRepository;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -10,7 +10,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 /**
  * Class ImageCopyrightController
  *
- * @package Fnn\ImageCopyright\Controller
+ * @package Walther\ImageCopyright\Controller
  */
 class ImageCopyrightController extends ActionController
 {
@@ -45,14 +45,14 @@ class ImageCopyrightController extends ActionController
     protected $tableFieldConfigurationForCollections = [];
 
     /**
-     * @var \Fnn\ImageCopyright\Resource\FileRepository
+     * @var \Walther\ImageCopyright\Resource\FileRepository
      */
     protected $fileRepository;
 
     /**
      * injectFileRepository
      *
-     * @param \Fnn\ImageCopyright\Resource\FileRepository $fileRepository
+     * @param \Walther\ImageCopyright\Resource\FileRepository $fileRepository
      */
     public function injectFileRepository(FileRepository $fileRepository) : void
     {

@@ -2,7 +2,7 @@
 defined('TYPO3_MODE') || die('Access denied.');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'Fnn.ImageCopyright',
+    'Walther.ImageCopyright',
     'ImageCopyright',
     'LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:general.title',
     'EXT:image_copyright/Resources/Public/Images/Backend/image_copyright.svg'

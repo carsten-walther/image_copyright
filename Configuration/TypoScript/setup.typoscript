@@ -14,40 +14,27 @@ plugin.tx_imagecopyright {
         }
     }
     settings {
-
         tableFieldConfiguration {
-
             10 {
                 extension = core
                 tableName = pages
             }
-
             20 {
                 extension = core
                 tableName = tt_content
             }
-
             30 {
                 extension = news
                 tableName = tx_news_domain_model_news
             }
-
-            40 {
-                extension = fnn_address
-                tableName = tx_fnnaddress_domain_model_person
-            }
         }
-
         tableFieldConfigurationForCollections {
-
             10 {
                 extension = core
                 tableName = tt_content
                 fieldName = file_collections
             }
-
         }
-
         extensions = {$plugin.tx_imagecopyright.settings.extensions}
         showEmpty = {$plugin.tx_imagecopyright.settings.showEmpty}
         includeFileCollections = {$plugin.tx_imagecopyright.settings.includeFileCollections}
