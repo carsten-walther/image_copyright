@@ -24,10 +24,7 @@ Configuration
 
 What's next?
 ------------
-Some things on the roadmap:
-- Add caching to speed up loading
-- Add documentation
-- Upload to TER
+...
 
 Sponsoring
 ----------
