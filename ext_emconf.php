@@ -15,10 +15,9 @@ $EM_CONF[$_EXTKEY] = [
     'clearCacheOnLoad' => 0,
     'author' => 'Carsten Walther',
     'author_email' => 'walther.carsten@web.de',
-    'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '^11.5',
+            'typo3' => '10.4.99-11.5.99',
         ],
     ]
 ];
