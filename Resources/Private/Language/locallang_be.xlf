@@ -24,6 +24,9 @@
 			<trans-unit id="flexforms.tabs.general.showEmpty">
 				<source>Show images with empty copyright</source>
 			</trans-unit>
+			<trans-unit id="flexforms.tabs.general.showUsedOnPage">
+				<source>Show page where the image is used</source>
+			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.includeFileCollections">
 				<source>Include files in file collections</source>
 			</trans-unit>

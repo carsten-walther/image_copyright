@@ -1,19 +1,29 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:if condition="{resource}">
+<f:if condition="{resource.file}">
 	<figure class="copyright">
-		<f:image treatIdAsReference="TRUE" image="{resource}" width="200c" height="133c" />
+		<f:image treatIdAsReference="TRUE" image="{resource.file}" width="200c" height="133c" />
 		<figcaption>
-			<f:if condition="{resource.properties.copyright}">
+			<f:if condition="{resource.file.properties.copyright}">
 				<f:then>
-					&copy; {resource.properties.copyright}
+					<p>&copy; {resource.file.properties.copyright}</p>
 				</f:then>
 				<f:else>
 					<f:if condition="{settings.globalCopyright}">
 						<f:then>
-							&copy; {settings.globalCopyright}
+							<p>&copy; {settings.globalCopyright}</p>
 						</f:then>
 					</f:if>
 				</f:else>
+			</f:if>
+			<f:if condition="{settings.showUsedOnPage} && {resource.pages}">
+				<p><f:translate key="used_on_pages" /></p>
+				<ul>
+					<f:for each="{resource.pages}" as="page">
+						<li>
+							<f:link.page pageUid="{page.uid}">{page.title}</f:link.page>
+						</li>
+					</f:for>
+				</ul>
 			</f:if>
 		</figcaption>
 	</figure>

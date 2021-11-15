@@ -10,6 +10,7 @@ plugin.tx_imagecopyright {
     settings {
         extensions = jpg, jpeg, png, gif
         showEmpty = 1
+        showUsedOnPage = 1
         includeFileCollections = 1
         globalCopyright = Example Company
     }

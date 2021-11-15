@@ -35,6 +35,14 @@
 							</config>
 						</TCEforms>
 					</settings.showEmpty>
+					<settings.showUsedOnPage>
+						<TCEforms>
+							<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.showUsedOnPage</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</settings.showUsedOnPage>
 					<settings.includeFileCollections>
 						<TCEforms>
 							<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.includeFileCollections</label>

@@ -1,4 +1,5 @@
 <?php
+
 defined('TYPO3_MODE') || die('Access denied.');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
@@ -8,7 +9,10 @@ defined('TYPO3_MODE') || die('Access denied.');
     'EXT:image_copyright/Resources/Public/Images/Backend/image_copyright.svg'
 );
 
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
+    'imagecopyright_imagecopyright',
+    'FILE:EXT:image_copyright/Configuration/FlexForms/flexform_imagecopyright.xml'
+);
+
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['imagecopyright_imagecopyright'] = 'select_key,pages,recursive';
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['imagecopyright_imagecopyright'] = 'pi_flexform';
-
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('imagecopyright_imagecopyright', 'FILE:EXT:image_copyright/Configuration/FlexForms/flexform_imagecopyright.xml');

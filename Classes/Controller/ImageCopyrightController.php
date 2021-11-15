@@ -17,37 +17,37 @@ class ImageCopyrightController extends ActionController
     /**
      * @var array
      */
-    protected $cObjectData = [];
+    protected array $cObjectData = [];
 
     /**
      * @var array
      */
-    protected $tableFieldConfiguration = [];
+    protected array $tableFieldConfiguration = [];
 
     /**
      * @var bool
      */
-    protected $showEmpty = true;
+    protected bool $showEmpty = true;
 
     /**
      * @var array
      */
-    protected $extensions = [];
+    protected array $extensions = [];
 
     /**
      * @var bool
      */
-    protected $includeFileCollections = false;
+    protected bool $includeFileCollections = false;
 
     /**
      * @var array
      */
-    protected $tableFieldConfigurationForCollections = [];
+    protected array $tableFieldConfigurationForCollections = [];
 
     /**
      * @var \Walther\ImageCopyright\Resource\FileRepository
      */
-    protected $fileRepository;
+    protected FileRepository $fileRepository;
 
     /**
      * injectFileRepository
@@ -98,6 +98,7 @@ class ImageCopyrightController extends ActionController
      * indexAction
      *
      * @return void
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function indexAction() : void
     {
@@ -110,11 +111,23 @@ class ImageCopyrightController extends ActionController
      * indexOnPageAction
      *
      * @return void
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function indexOnPageAction() : void
     {
         $this->view->assignMultiple([
             'images' => $this->fileRepository->findAllByRelation($this->tableFieldConfiguration, $this->tableFieldConfigurationForCollections, $this->extensions, $this->showEmpty, $this->cObjectData['pid'])
         ]);
+    }
+
+    /**
+     * @param bool $showEmpty
+     *
+     * @return ImageCopyrightController
+     */
+    public function setShowEmpty(bool $showEmpty) : ImageCopyrightController
+    {
+        $this->showEmpty = $showEmpty;
+        return $this;
     }
 }

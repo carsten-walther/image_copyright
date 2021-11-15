@@ -37,6 +37,7 @@ plugin.tx_imagecopyright {
         }
         extensions = {$plugin.tx_imagecopyright.settings.extensions}
         showEmpty = {$plugin.tx_imagecopyright.settings.showEmpty}
+        showUsedOnPage = {$plugin.tx_imagecopyright.settings.showUsedOnPage}
         includeFileCollections = {$plugin.tx_imagecopyright.settings.includeFileCollections}
         globalCopyright = {$plugin.tx_imagecopyright.settings.globalCopyright}
     }

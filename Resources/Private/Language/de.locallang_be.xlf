@@ -31,6 +31,10 @@
 				<target>Bilder ohne Copyright-Information anzeigen</target>
 				<source>Show images with empty copyright</source>
 			</trans-unit>
+			<trans-unit id="flexforms.tabs.general.showUsedOnPage">
+				<target>Die Seite anzeigen, auf der das Bild verwendet wird</target>
+				<source>Show page where the image is used</source>
+			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.includeFileCollections">
 				<target>Bilder aus Dateisammlungen einbeziehen</target>
 				<source>Include files in file collections</source>
