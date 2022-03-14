@@ -1,6 +1,8 @@
 {
-	"name": "walther/image-copyright",
+	"name": "walther/image_copyright",
 	"type": "typo3-cms-extension",
+	"version": "11.5.1",
+	"minimum-stability": "stable",
 	"description": "Add copyright informations of all images to your site",
 	"keywords": [
 		"TYPO3",
@@ -8,24 +10,32 @@
 		"images",
 		"copytight"
 	],
-	"homepage": "https://carstenwalther.de",
-	"license": "GPL-3.0-or-later",
 	"require": {
-		"typo3/cms-core": "10.4.99-11.5.99"
+		"php": "^7.4",
+		"typo3/cms-core": "^10.4 || ^11.5",
+		"typo3/cms-extbase": "^10.4 || ^11.5",
+		"typo3/cms-fluid": "^10.4 || ^11.5",
+		"typo3/cms-frontend": "^10.4 || ^11.5",
+		"typo3/cms-backend": "^10.4 || ^11.5"
+	},
+	"authors": [
+		{
+			"name": "Carsten Walther",
+			"role": "Developer",
+			"email": "walther.carsten@web.de"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Walther\\ImageCopyright\\": "Classes/"
+		}
 	},
 	"extra": {
 		"typo3/cms": {
 			"extension-key": "image_copyright"
 		}
 	},
-	"autoload" : {
-		"psr-4" : {
-			"Walther\\ImageCopyright\\" : "Classes/"
-		}
-	},
-	"minimum-stability" : "beta",
-	"authors" : [{
-		"name" : "Carsten Walther",
-		"email" : "walther.carsten@web.de"
-	}]
+	"replace": {
+		"typo3-ter/image_copyright": "self.version"
+	}
 }
