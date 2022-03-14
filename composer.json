@@ -1,7 +1,7 @@
 {
 	"name": "walther/image_copyright",
 	"type": "typo3-cms-extension",
-	"version": "11.5.1",
+	"version": "11.5.2",
 	"minimum-stability": "stable",
 	"description": "Add copyright informations of all images to your site",
 	"keywords": [

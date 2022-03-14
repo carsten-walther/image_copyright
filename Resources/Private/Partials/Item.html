@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:if condition="{resource.file}">
 	<figure class="copyright">
-		<f:image treatIdAsReference="TRUE" image="{resource.file}" width="200c" height="133c" />
+		<f:image treatIdAsReference="TRUE" image="{resource.file}" width="200c" height="133c" absolute="1"/>
 		<figcaption>
 			<f:if condition="{resource.file.properties.copyright}">
 				<f:then>
