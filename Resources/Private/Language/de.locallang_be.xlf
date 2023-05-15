@@ -20,16 +20,16 @@
 				<source>Mode</source>
 			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.mode.index">
-				<target>Gesamter Seitenbaum</target>
-				<source>Whole Page Tree</source>
+				<target>Bilder im gesamten Seitenbaum anzeigen</target>
+				<source>Show images on whole page tree</source>
 			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.mode.indexOnPage">
-				<target>Aktuelle Seite</target>
-				<source>Current Page</source>
+				<target>Bilder auf aktueller Seite anzeigen</target>
+				<source>Show images on current page</source>
 			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.showEmpty">
 				<target>Bilder ohne Copyright-Information anzeigen</target>
-				<source>Show images with empty copyright</source>
+				<source>Show images with empty copyright information</source>
 			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.showUsedOnPage">
 				<target>Die Seite anzeigen, auf der das Bild verwendet wird</target>

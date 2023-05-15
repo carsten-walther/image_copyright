@@ -24,7 +24,7 @@ ImageCopyright
     2020
 
 :Author:
-    Carsten Walther
+    Carsten CarstenWalther
 
 :Email:
     walther.carsten@web.de

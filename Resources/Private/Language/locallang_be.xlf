@@ -16,13 +16,13 @@
 				<source>Mode</source>
 			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.mode.index">
-				<source>Whole Page Tree</source>
+				<source>Show images on whole page tree</source>
 			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.mode.indexOnPage">
-				<source>Current Page</source>
+				<source>Show images on current page</source>
 			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.showEmpty">
-				<source>Show images with empty copyright</source>
+				<source>Show images with empty copyright information</source>
 			</trans-unit>
 			<trans-unit id="flexforms.tabs.general.showUsedOnPage">
 				<source>Show page where the image is used</source>

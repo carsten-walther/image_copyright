@@ -1,8 +1,10 @@
 <?php
 
-namespace Walther\ImageCopyright\Controller;
+namespace CarstenWalther\ImageCopyright\Controller;
 
-use Walther\ImageCopyright\Resource\FileRepository;
+use CarstenWalther\ImageCopyright\Resource\FileRepository;
+use Doctrine\DBAL\Driver\Exception;
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -10,7 +12,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 /**
  * Class ImageCopyrightController
  *
- * @package Walther\ImageCopyright\Controller
+ * @package CarstenWalther\ImageCopyright\Controller
  */
 class ImageCopyrightController extends ActionController
 {
@@ -45,16 +47,16 @@ class ImageCopyrightController extends ActionController
     protected array $tableFieldConfigurationForCollections = [];
 
     /**
-     * @var \Walther\ImageCopyright\Resource\FileRepository
+     * @var FileRepository
      */
     protected FileRepository $fileRepository;
 
     /**
      * injectFileRepository
      *
-     * @param \Walther\ImageCopyright\Resource\FileRepository $fileRepository
+     * @param FileRepository $fileRepository
      */
-    public function injectFileRepository(FileRepository $fileRepository) : void
+    public function injectFileRepository(FileRepository $fileRepository): void
     {
         $this->fileRepository = $fileRepository;
     }
@@ -64,7 +66,7 @@ class ImageCopyrightController extends ActionController
      *
      * @return void
      */
-    public function initializeAction() : void
+    public function initializeAction(): void
     {
         $this->cObjectData = $this->configurationManager->getContentObject()->data;
 
@@ -92,32 +94,51 @@ class ImageCopyrightController extends ActionController
                 }
             }
         }
+
+        parent::initializeAction();
     }
 
     /**
      * indexAction
      *
-     * @return void
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @return ResponseInterface
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Exception
      */
-    public function indexAction() : void
+    public function indexAction(): ResponseInterface
     {
         $this->view->assignMultiple([
-            'images' => $this->fileRepository->findAllByRelation($this->tableFieldConfiguration, $this->tableFieldConfigurationForCollections, $this->extensions, $this->showEmpty, null)
+            'images' => $this->fileRepository->findAllByRelation(
+                $this->tableFieldConfiguration,
+                $this->tableFieldConfigurationForCollections,
+                $this->extensions,
+                $this->showEmpty
+            )
         ]);
+
+        return $this->htmlResponse();
     }
 
     /**
      * indexOnPageAction
      *
-     * @return void
-     * @throws \Doctrine\DBAL\Driver\Exception
+     * @return ResponseInterface
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Exception
      */
-    public function indexOnPageAction() : void
+    public function indexOnPageAction(): ResponseInterface
     {
         $this->view->assignMultiple([
-            'images' => $this->fileRepository->findAllByRelation($this->tableFieldConfiguration, $this->tableFieldConfigurationForCollections, $this->extensions, $this->showEmpty, $this->cObjectData['pid'])
+            'images' => $this->fileRepository->findAllByRelation(
+                $this->tableFieldConfiguration,
+                $this->tableFieldConfigurationForCollections,
+                $this->extensions,
+                $this->showEmpty,
+                $this->cObjectData['pid']
+            )
         ]);
+
+        return $this->htmlResponse();
     }
 
     /**
@@ -125,7 +146,7 @@ class ImageCopyrightController extends ActionController
      *
      * @return ImageCopyrightController
      */
-    public function setShowEmpty(bool $showEmpty) : ImageCopyrightController
+    public function setShowEmpty(bool $showEmpty): ImageCopyrightController
     {
         $this->showEmpty = $showEmpty;
         return $this;

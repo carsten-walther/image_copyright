@@ -1,7 +1,7 @@
 {
-	"name": "walther/image_copyright",
+	"name": "carsten-walther/image_copyright",
 	"type": "typo3-cms-extension",
-	"version": "11.5.2",
+	"version": "12.4.1",
 	"minimum-stability": "stable",
 	"description": "Add copyright informations of all images to your site",
 	"keywords": [
@@ -11,12 +11,13 @@
 		"copytight"
 	],
 	"require": {
-		"php": "^7.4",
-		"typo3/cms-core": "^10.4 || ^11.5",
-		"typo3/cms-extbase": "^10.4 || ^11.5",
-		"typo3/cms-fluid": "^10.4 || ^11.5",
-		"typo3/cms-frontend": "^10.4 || ^11.5",
-		"typo3/cms-backend": "^10.4 || ^11.5"
+		"php": "^7.4 || ^8.1 || ^8.2",
+		"typo3/cms-core": "^10.4 || ^12.4",
+		"typo3/cms-extbase": "^10.4 || ^12.4",
+		"typo3/cms-fluid": "^10.4 || ^12.4",
+		"typo3/cms-frontend": "^10.4 || ^12.4",
+		"typo3/cms-backend": "^10.4 || ^12.4",
+		"ext-pdo": "*"
 	},
 	"authors": [
 		{
@@ -27,7 +28,7 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Walther\\ImageCopyright\\": "Classes/"
+			"CarstenWalther\\ImageCopyright\\": "Classes/"
 		}
 	},
 	"extra": {
