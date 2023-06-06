@@ -152,7 +152,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             $res = $queryBuilder
                 ->orderBy('sys_file_reference.sorting_foreign')
                 ->groupBy('sys_file_reference.uid_local')
-                ->executeQuery();
+                ->execute();
 
             while ($row = $res->fetchAssociative()) {
                 $referenceUids[] = [
@@ -250,7 +250,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     ->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
             }
 
-            $statement = $queryBuilder->executeQuery();
+            $statement = $queryBuilder->execute();
 
             while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
@@ -357,7 +357,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     ->eq('sys_file_reference.sys_language_uid', GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId())
             )
             ->orderBy('sys_file_reference.sorting_foreign')
-            ->executeQuery()
+            ->execute()
             ->fetchAllAssociative();
 
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
@@ -463,7 +463,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             $res = $queryBuilder
                 ->orderBy('sys_file_reference.sorting_foreign')
                 ->groupBy('sys_file_reference.uid_local')
-                ->executeQuery();
+                ->execute();
 
             while ($row = $res->fetchAssociative()) {
                 $referenceUids[] = [
@@ -505,7 +505,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     ->expr()
                     ->eq('uid', $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT))
             )
-            ->executeQuery()
+            ->execute()
             ->fetchAssociative();
 
         if ($result['pid']) {
