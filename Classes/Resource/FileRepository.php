@@ -4,6 +4,8 @@ namespace CarstenWalther\ImageCopyright\Resource;
 
 use Doctrine\DBAL\Driver\Exception;
 use PDO;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -55,7 +57,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
      * @param int|null $pid
      *
      * @return array
-     * @throws Exception|\Doctrine\DBAL\Exception
+     * @throws Exception|\Doctrine\DBAL\Exception|AspectNotFoundException
      */
     public function findAllByRelation(
         array $tableFieldConfiguration,
@@ -139,7 +141,11 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                                 ->eq('sys_file_reference.deleted', 0),
                             $queryBuilder
                                 ->expr()
-                                ->eq('sys_file_reference.hidden', 0)
+                                ->eq('sys_file_reference.hidden', 0),
+                            $queryBuilder
+                                ->expr()
+                                ->eq('sys_file_reference.sys_language_uid', GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId())
+
                         )
                 );
 
@@ -155,8 +161,14 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 ];
             }
 
-            return $this->prepareList(array_merge($referenceUids,
+            $result = $this->prepareList(array_merge($referenceUids,
                 $this->getImagesFromFileCollections($tableFieldConfigurationForCollections, $pageTreePidArray)));
+
+            usort($result, static function($a, $b) {
+                return strcmp($a['file']->getName(), $b['file']->getName());
+            });
+
+            return $result;
         }
 
         return [];
@@ -229,10 +241,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 ->where(
                     $queryBuilder
                         ->expr()
-                        ->eq('pid', $queryBuilder->createNamedParameter($id, PDO::PARAM_INT)),
-                    $queryBuilder
-                        ->expr()
-                        ->eq('sys_language_uid', 0)
+                        ->eq('pid', $queryBuilder->createNamedParameter($id, PDO::PARAM_INT))
                 )
                 ->orderBy('uid');
 
@@ -268,6 +277,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
      *
      * @return array
      * @throws Exception|\Doctrine\DBAL\Exception
+     * @throws AspectNotFoundException
      */
     private function prepareList(array $references): array
     {
@@ -315,7 +325,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
      * @param FileReference $fileReferenceObject
      *
      * @return array
-     * @throws Exception|\Doctrine\DBAL\Exception
+     * @throws Exception|\Doctrine\DBAL\Exception|AspectNotFoundException
      */
     private function generateFileReferencePages(FileReference $fileReferenceObject): array
     {
@@ -341,8 +351,12 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             ->where(
                 $queryBuilder
                     ->expr()
-                    ->eq('sys_file_reference.uid_local', $fileReferenceObject->getProperties()['uid_local'])
+                    ->eq('sys_file_reference.uid_local', $fileReferenceObject->getProperties()['uid_local']),
+                $queryBuilder
+                    ->expr()
+                    ->eq('sys_file_reference.sys_language_uid', GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId())
             )
+            ->orderBy('sys_file_reference.sorting_foreign')
             ->executeQuery()
             ->fetchAllAssociative();
 
@@ -364,7 +378,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
      * @param array $pid
      *
      * @return array
-     * @throws Exception|\Doctrine\DBAL\Exception
+     * @throws Exception|\Doctrine\DBAL\Exception|AspectNotFoundException
      */
     private function getImagesFromFileCollections(array $tableFieldConfigurationForCollections, array $pid): array
     {
@@ -439,7 +453,10 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                                 ->eq('sys_file_collection.deleted', 0),
                             $queryBuilder
                                 ->expr()
-                                ->eq('sys_file_collection.hidden', 0)
+                                ->eq('sys_file_collection.hidden', 0),
+                            $queryBuilder
+                                ->expr()
+                                ->eq('sys_file_reference.sys_language_uid', GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId())
                         )
                 );
 

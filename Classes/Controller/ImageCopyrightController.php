@@ -5,6 +5,7 @@ namespace CarstenWalther\ImageCopyright\Controller;
 use CarstenWalther\ImageCopyright\Resource\FileRepository;
 use Doctrine\DBAL\Driver\Exception;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -103,7 +104,7 @@ class ImageCopyrightController extends ActionController
      *
      * @return ResponseInterface
      * @throws Exception
-     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\Exception|AspectNotFoundException
      */
     public function indexAction(): ResponseInterface
     {
@@ -124,7 +125,7 @@ class ImageCopyrightController extends ActionController
      *
      * @return ResponseInterface
      * @throws Exception
-     * @throws \Doctrine\DBAL\Exception
+     * @throws \Doctrine\DBAL\Exception|AspectNotFoundException
      */
     public function indexOnPageAction(): ResponseInterface
     {

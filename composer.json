@@ -1,7 +1,7 @@
 {
 	"name": "carsten-walther/image_copyright",
 	"type": "typo3-cms-extension",
-	"version": "12.4.1",
+	"version": "12.4.2",
 	"minimum-stability": "stable",
 	"description": "Add copyright informations of all images to your site",
 	"license": "GPL-3.0-or-later",
