@@ -214,7 +214,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
      * @throws Exception
      * @throws \Doctrine\DBAL\Exception
      */
-    public function getTreeList(int $id, int $depth, int $begin = 0, string $permClause = ''): int|string
+    public function getTreeList(int $id, int $depth, int $begin = 0, string $permClause = '')
     {
         if ($id < 0) {
             $id = abs($id);
