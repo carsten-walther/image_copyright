@@ -4,6 +4,7 @@
 	"version": "12.4.1",
 	"minimum-stability": "stable",
 	"description": "Add copyright informations of all images to your site",
+	"license": "GPL-3.0-or-later",
 	"keywords": [
 		"TYPO3",
 		"extension",
