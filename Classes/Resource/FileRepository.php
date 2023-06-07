@@ -103,9 +103,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     $tableName,
                     $queryBuilder
                         ->expr()
-                        ->eq('sys_file_reference.uid_foreign',
-                            $queryBuilder->quoteIdentifier($tableName . '.uid')) . ' AND ' . $queryBuilder->expr()->eq('sys_file_reference.tablenames',
-                        $queryBuilder->createNamedParameter($tableName, PDO::PARAM_STR))
+                        ->eq('sys_file_reference.uid_foreign', $queryBuilder->quoteIdentifier($tableName . '.uid')) . ' AND ' . $queryBuilder->expr()->eq('sys_file_reference.tablenames', $queryBuilder->createNamedParameter($tableName, PDO::PARAM_STR))
                 );
 
                 $queryBuilder
@@ -118,8 +116,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                                     ->eq($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'], 0),
                                 $queryBuilder
                                     ->expr()
-                                    ->eq($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['disabled'],
-                                        0)
+                                    ->eq($tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['disabled'], 0)
                             )
                     );
             }
@@ -145,14 +142,13 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                             $queryBuilder
                                 ->expr()
                                 ->eq('sys_file_reference.sys_language_uid', GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId())
-
                         )
                 );
 
             $res = $queryBuilder
                 ->orderBy('sys_file_reference.sorting_foreign')
                 ->groupBy('sys_file_reference.uid_local')
-                ->execute();
+                ->executeQuery();
 
             while ($row = $res->fetchAssociative()) {
                 $referenceUids[] = [
@@ -250,7 +246,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     ->andWhere(QueryHelper::stripLogicalOperatorPrefix($permClause));
             }
 
-            $statement = $queryBuilder->execute();
+            $statement = $queryBuilder->executeQuery();
 
             while ($row = $statement->fetchAssociative()) {
                 if ($begin <= 0) {
@@ -357,7 +353,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     ->eq('sys_file_reference.sys_language_uid', GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId())
             )
             ->orderBy('sys_file_reference.sorting_foreign')
-            ->execute()
+            ->executeQuery()
             ->fetchAllAssociative();
 
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
@@ -402,9 +398,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 'sys_file_collection',
                 $queryBuilder
                     ->expr()
-                    ->eq('sys_file_reference.uid_foreign',
-                        $queryBuilder->quoteIdentifier('sys_file_collection.uid')) . ' AND ' . $queryBuilder->expr()->eq('sys_file_reference.tablenames',
-                    $queryBuilder->createNamedParameter('sys_file_collection', PDO::PARAM_STR))
+                    ->eq('sys_file_reference.uid_foreign', $queryBuilder->quoteIdentifier('sys_file_collection.uid')) . ' AND ' . $queryBuilder->expr()->eq('sys_file_reference.tablenames', $queryBuilder->createNamedParameter('sys_file_collection', PDO::PARAM_STR))
             );
 
             foreach ($tableFieldConfigurationForCollections as $configuration) {
@@ -414,8 +408,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     $configuration['tableName'],
                     $queryBuilder
                         ->expr()
-                        ->inSet($configuration['tableName'] . '.' . $configuration['fieldName'],
-                            $queryBuilder->quoteIdentifier('sys_file_collection.uid'))
+                        ->inSet($configuration['tableName'] . '.' . $configuration['fieldName'], $queryBuilder->quoteIdentifier('sys_file_collection.uid'))
                 );
 
                 $queryBuilder->orWhere(
@@ -424,12 +417,10 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                         ->and(
                             $queryBuilder
                                 ->expr()
-                                ->eq($configuration['tableName'] . '.' . $GLOBALS['TCA'][$configuration['tableName']]['ctrl']['delete'],
-                                    0),
+                                ->eq($configuration['tableName'] . '.' . $GLOBALS['TCA'][$configuration['tableName']]['ctrl']['delete'], 0),
                             $queryBuilder
                                 ->expr()
-                                ->eq($configuration['tableName'] . '.' . $GLOBALS['TCA'][$configuration['tableName']]['ctrl']['enablecolumns']['disabled'],
-                                    0),
+                                ->eq($configuration['tableName'] . '.' . $GLOBALS['TCA'][$configuration['tableName']]['ctrl']['enablecolumns']['disabled'], 0),
                             $queryBuilder
                                 ->expr()
                                 ->in($configuration['tableName'] . '.' . 'pid', $pid)
@@ -463,7 +454,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             $res = $queryBuilder
                 ->orderBy('sys_file_reference.sorting_foreign')
                 ->groupBy('sys_file_reference.uid_local')
-                ->execute();
+                ->executeQuery();
 
             while ($row = $res->fetchAssociative()) {
                 $referenceUids[] = [
@@ -505,7 +496,7 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     ->expr()
                     ->eq('uid', $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT))
             )
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
 
         if ($result['pid']) {
