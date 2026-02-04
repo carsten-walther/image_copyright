@@ -83,6 +83,7 @@ class ImageCopyrightController extends ActionController
             $this->tableFieldConfigurationForCollections,
             $this->extensions,
             $this->showEmpty,
+            $this->settings,
             $pid
         );
 

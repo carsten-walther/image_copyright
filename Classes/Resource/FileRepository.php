@@ -31,6 +31,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
         array $tableFieldConfigurationForCollections,
         array $extensions,
         bool $showEmpty,
+        array $settings,
         ?int $pid = null
     ): array {
         $includeFileCollections = !empty($tableFieldConfigurationForCollections);
@@ -128,7 +129,8 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 array_merge($referenceUids, $this->getImagesFromFileCollections($tableFieldConfigurationForCollections, $pageTreePidArray, $includeFileCollections)),
                 $extensions,
                 $showEmpty,
-                $tableFieldConfiguration
+                $tableFieldConfiguration,
+                $settings['showUsedOnPage']
             );
 
             usort($result, static function($a, $b) {
@@ -225,7 +227,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
      * @throws AspectNotFoundException
      * @throws Exception
      */
-    private function prepareList(array $references, array $extensions, bool $showEmpty, array $tableFieldConfiguration): array
+    private function prepareList(array $references, array $extensions, bool $showEmpty, array $tableFieldConfiguration, bool $showUsedOnPage = false): array
     {
         $itemList = [];
 
@@ -242,17 +244,22 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
         }
 
         if (!empty($referenceUids)) {
-            foreach ($referenceUids as $referenceUid) {
+            foreach ($referenceUids as $key => $referenceUid) {
 
                 try {
                     $fileReferenceObject = $this->factory->getFileReferenceObject($referenceUid);
                     $fileExtension = $fileReferenceObject->getExtension();
                     if ($fileReferenceObject->isMissing() === false && in_array($fileExtension, $extensions, true) && file_exists(Environment::getPublicPath() . $fileReferenceObject->getPublicUrl()) === true) {
                         if ($showEmpty === true || ($showEmpty === false && !empty($fileReferenceObject->hasProperty('copyright')))) {
-                            $itemList[] = [
+                            $pages = null;
+                            if ($showUsedOnPage) {
+                                $pages = $this->generateFileReferencePages($fileReferenceObject, $tableFieldConfiguration);
+                            }
+                            $itemList[$key] = [
                                 'file' => $fileReferenceObject->getOriginalFile(),
-                                'pages' => $this->generateFileReferencePages($fileReferenceObject, $tableFieldConfiguration)
+                                'pages' => $pages
                             ];
+
                         }
                     }
                 } catch (ResourceDoesNotExistException $exception) {
