@@ -13,5 +13,7 @@ plugin.tx_imagecopyright {
         showUsedOnPage = 1
         includeFileCollections = 1
         globalCopyright = Example Company
+        itemsPerPage = 10
+        maximumLinks = 15
     }
 }

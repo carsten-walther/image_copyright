@@ -1,8 +1,10 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:layout name="Default" />
 <f:section name="main">
-	<f:for each="{images}" as="resource">
+	<f:render partial="Pagination" arguments="{pagination: pagination, paginator: paginator, actionName: 'index'}" />
+	<f:for each="{paginator.paginatedItems}" as="resource">
 		<f:render partial="Item" arguments="{_all}" />
 	</f:for>
+	<f:render partial="Pagination" arguments="{pagination: pagination, paginator: paginator, actionName: 'index'}" />
 </f:section>
 </html>

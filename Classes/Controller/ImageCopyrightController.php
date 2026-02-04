@@ -6,6 +6,8 @@ use CarstenWalther\ImageCopyright\Resource\FileRepository;
 use Doctrine\DBAL\Exception;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -72,14 +74,25 @@ class ImageCopyrightController extends ActionController
                 break;
         }
 
+        $itemsPerPage = $this->settings['itemsPerPage'] ?: 10;
+        $maximumLinks = $this->settings['maximumLinks'] ?:  15;
+        $currentPage = $this->request->hasArgument('currentPageNumber') ? (int)$this->request->getArgument('currentPageNumber') : 1;
+
+        $images = $this->fileRepository->findAllByRelation(
+            $this->tableFieldConfiguration,
+            $this->tableFieldConfigurationForCollections,
+            $this->extensions,
+            $this->showEmpty,
+            $pid
+        );
+
+        $paginator = new ArrayPaginator($images, $currentPage, $itemsPerPage);
+        $pagination = new SlidingWindowPagination($paginator, $maximumLinks);
+
         $this->view->assignMultiple([
-            'images' => $this->fileRepository->findAllByRelation(
-                $this->tableFieldConfiguration,
-                $this->tableFieldConfigurationForCollections,
-                $this->extensions,
-                $this->showEmpty,
-                $pid
-            )
+            'pagination' => $pagination,
+            'paginator' => $paginator,
+            'images' => $images
         ]);
 
         return $this->htmlResponse();

@@ -40,5 +40,7 @@ plugin.tx_imagecopyright {
         showUsedOnPage = {$plugin.tx_imagecopyright.settings.showUsedOnPage}
         includeFileCollections = {$plugin.tx_imagecopyright.settings.includeFileCollections}
         globalCopyright = {$plugin.tx_imagecopyright.settings.globalCopyright}
+        itemsPerPage = {$plugin.tx_imagecopyright.settings.itemsPerPage}
+        maximumLinks = {$plugin.tx_imagecopyright.settings.maximumLinks}
     }
 }

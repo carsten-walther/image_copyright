@@ -1,0 +1,49 @@
+<ul class="f3-widget-paginator">
+    <f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} > {pagination.firstPageNumber}">
+        <f:then>
+            <li class="first">
+                <a href="{f:uri.action(action: actionName, arguments: {currentPageNumber: 1})}" title="{f:translate(key: 'widget.pagination.first', extensionName: 'fluid')}">
+                    {f:translate(key: 'widget.pagination.first', extensionName: 'fluid')}
+                </a>
+            </li>
+            <li class="previous">
+                <a href="{f:uri.action(action: actionName, arguments: {currentPageNumber: pagination.previousPageNumber})}" title="{f:translate(key: 'widget.pagination.previous', extensionName: 'fluid')}">
+                    {f:translate(key: 'widget.pagination.previous', extensionName: 'fluid')}
+                </a>
+            </li>
+        </f:then>
+        <f:else>
+            <li class="disabled"><span>{f:translate(key: 'widget.pagination.first', extensionName: 'fluid')}</span></li>
+            <li class="disabled"><span>{f:translate(key: 'widget.pagination.previous', extensionName: 'fluid')}</span></li>
+        </f:else>
+    </f:if>
+    <f:if condition="{pagination.hasLessPages}">
+        <li>…</li>
+    </f:if>
+    <f:for each="{pagination.allPageNumbers}" as="page">
+        <li class="{f:if(condition: '{page} == {paginator.currentPageNumber}', then: 'current')}">
+            <a href="{f:uri.action(action: actionName, arguments: {currentPageNumber: page})}">{page}</a>
+        </li>
+    </f:for>
+    <f:if condition="{pagination.hasMorePages}">
+        <li>…</li>
+    </f:if>
+    <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} < {pagination.lastPageNumber}">
+        <f:then>
+            <li class="next">
+                <a href="{f:uri.action(action: actionName, arguments: {currentPageNumber: pagination.nextPageNumber})}" title="{f:translate(key: 'widget.pagination.next', extensionName: 'fluid')}">
+                    {f:translate(key:'widget.pagination.next', extensionName: 'fluid')}
+                </a>
+            </li>
+            <li class="last">
+                <a href="{f:uri.action(action: actionName, arguments: {currentPageNumber: pagination.lastPageNumber})}" title="{f:translate(key: 'widget.pagination.last', extensionName: 'fluid')}">
+                    {f:translate(key:'widget.pagination.last', extensionName: 'fluid')}
+                </a>
+            </li>
+        </f:then>
+        <f:else>
+            <li class="disabled"><span>{f:translate(key: 'widget.pagination.next', extensionName: 'fluid')}</span></li>
+            <li class="disabled"><span>{f:translate(key: 'widget.pagination.last', extensionName: 'fluid')}</span></li>
+        </f:else>
+    </f:if>
+</ul>
