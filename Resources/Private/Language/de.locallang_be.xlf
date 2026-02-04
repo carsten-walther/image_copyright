@@ -5,7 +5,7 @@
 		<body>
 			<trans-unit id="general.title">
 				<target>Bildnachweise / Copyright</target>
-				<source>Image copyrights</source>
+				<source>Image copyright</source>
 			</trans-unit>
 			<trans-unit id="general.description">
 				<target>Übersicht über alle im Seitenbaum oder auf einer einzelnen Seite verwendeten Bilder und deren Copyright-Informationen.</target>

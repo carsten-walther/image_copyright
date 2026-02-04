@@ -1,18 +1,25 @@
 <?php
 
-defined('TYPO3') or die();
+declare(strict_types=1);
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
+$ctypeKey = \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     'ImageCopyright',
     'ImageCopyright',
     'LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:general.title',
-    'EXT:image_copyright/Resources/Public/Images/Backend/image_copyright.svg'
+    'EXT:image_copyright/Resources/Public/Images/Backend/image_copyright.svg',
+    'plugins',
+    'LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:general.description',
+);
+
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
+    'tt_content',
+    '--div--;Configuration,pi_flexform,',
+    $ctypeKey,
+    'after:subheader',
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-    'imagecopyright_imagecopyright',
-    'FILE:EXT:image_copyright/Configuration/FlexForms/flexform_imagecopyright.xml'
+    '',
+    'FILE:EXT:image_copyright/Configuration/FlexForms/imagecopyright.xml',
+    $ctypeKey,
 );
-
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['imagecopyright_imagecopyright'] = 'select_key,pages,recursive';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['imagecopyright_imagecopyright'] = 'pi_flexform';

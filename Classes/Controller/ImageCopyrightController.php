@@ -3,73 +3,30 @@
 namespace CarstenWalther\ImageCopyright\Controller;
 
 use CarstenWalther\ImageCopyright\Resource\FileRepository;
-use Doctrine\DBAL\Driver\Exception;
+use Doctrine\DBAL\Exception;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
-/**
- * Class ImageCopyrightController
- *
- * @package CarstenWalther\ImageCopyright\Controller
- */
 class ImageCopyrightController extends ActionController
 {
-    /**
-     * @var array
-     */
-    protected array $cObjectData = [];
-
-    /**
-     * @var array
-     */
+    protected ?ContentObjectRenderer $cObjectData = null;
     protected array $tableFieldConfiguration = [];
-
-    /**
-     * @var bool
-     */
     protected bool $showEmpty = true;
-
-    /**
-     * @var array
-     */
     protected array $extensions = [];
-
-    /**
-     * @var bool
-     */
     protected bool $includeFileCollections = false;
-
-    /**
-     * @var array
-     */
     protected array $tableFieldConfigurationForCollections = [];
 
-    /**
-     * @var FileRepository
-     */
-    protected FileRepository $fileRepository;
+    public function __construct(
+        protected readonly FileRepository $fileRepository
+    ) {}
 
-    /**
-     * injectFileRepository
-     *
-     * @param FileRepository $fileRepository
-     */
-    public function injectFileRepository(FileRepository $fileRepository): void
-    {
-        $this->fileRepository = $fileRepository;
-    }
-
-    /**
-     * initializeAction
-     *
-     * @return void
-     */
     public function initializeAction(): void
     {
-        $this->cObjectData = $this->configurationManager->getContentObject()->data;
+        $this->cObjectData = $this->request->getAttribute('currentContentObject');
 
         // get table field configuration
         $tempTableFieldConfiguration = $this->settings['tableFieldConfiguration'];
@@ -100,56 +57,31 @@ class ImageCopyrightController extends ActionController
     }
 
     /**
-     * indexAction
-     *
-     * @return ResponseInterface
+     * @throws AspectNotFoundException
      * @throws Exception
-     * @throws \Doctrine\DBAL\Exception|AspectNotFoundException
      */
     public function indexAction(): ResponseInterface
     {
-        $this->view->assignMultiple([
-            'images' => $this->fileRepository->findAllByRelation(
-                $this->tableFieldConfiguration,
-                $this->tableFieldConfigurationForCollections,
-                $this->extensions,
-                $this->showEmpty
-            )
-        ]);
+        switch ($this->settings['action']) {
+            default:
+            case 'onAllPages':
+                $pid = null;
+                break;
+            case 'onThisPage':
+                $pid = $this->cObjectData->data['pid'];
+                break;
+        }
 
-        return $this->htmlResponse();
-    }
-
-    /**
-     * indexOnPageAction
-     *
-     * @return ResponseInterface
-     * @throws Exception
-     * @throws \Doctrine\DBAL\Exception|AspectNotFoundException
-     */
-    public function indexOnPageAction(): ResponseInterface
-    {
         $this->view->assignMultiple([
             'images' => $this->fileRepository->findAllByRelation(
                 $this->tableFieldConfiguration,
                 $this->tableFieldConfigurationForCollections,
                 $this->extensions,
                 $this->showEmpty,
-                $this->cObjectData['pid']
+                $pid
             )
         ]);
 
         return $this->htmlResponse();
-    }
-
-    /**
-     * @param bool $showEmpty
-     *
-     * @return ImageCopyrightController
-     */
-    public function setShowEmpty(bool $showEmpty): ImageCopyrightController
-    {
-        $this->showEmpty = $showEmpty;
-        return $this;
     }
 }

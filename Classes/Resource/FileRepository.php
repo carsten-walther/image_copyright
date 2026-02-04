@@ -2,17 +2,17 @@
 
 namespace CarstenWalther\ImageCopyright\Resource;
 
-use Doctrine\DBAL\Driver\Exception;
-use PDO;
+use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -20,44 +20,11 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 use function file_exists;
 use function in_array;
 
-/**
- * Class FileRepository
- *
- * @package CarstenWalther\ImageCopyright\Resource
- */
-class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
+readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
 {
     /**
-     * @var array
-     */
-    protected array $extensions = [];
-
-    /**
-     * @var bool
-     */
-    protected bool $showEmpty = false;
-
-    /**
-     * @var bool
-     */
-    protected bool $includeFileCollections = false;
-
-    /**
-     * @var array
-     */
-    protected array $tableFieldConfiguration = [];
-
-    /**
-     * findAllByRelation
-     *
-     * @param array $tableFieldConfiguration
-     * @param array $tableFieldConfigurationForCollections
-     * @param array $extensions
-     * @param bool $showEmpty
-     * @param int|null $pid
-     *
-     * @return array
-     * @throws Exception|\Doctrine\DBAL\Exception|AspectNotFoundException
+     * @throws AspectNotFoundException
+     * @throws Exception
      */
     public function findAllByRelation(
         array $tableFieldConfiguration,
@@ -66,25 +33,21 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
         bool $showEmpty,
         ?int $pid = null
     ): array {
-        $this->extensions = $extensions;
-        $this->showEmpty = $showEmpty;
-        $this->includeFileCollections = !empty($tableFieldConfigurationForCollections);
-        $referenceUids = [];
+        $includeFileCollections = !empty($tableFieldConfigurationForCollections);
 
-        $this->tableFieldConfiguration = $tableFieldConfiguration;
+        $referenceUids = [];
 
         // Get the table names for regular sys_file_references from the configuration
         $tableNames = [];
-        foreach ($this->tableFieldConfiguration as $configuration) {
+        foreach ($tableFieldConfiguration as $configuration) {
             $tableNames[] = $configuration['tableName'];
         }
 
         // Get all PIDs in a page tree if no pid is given explicitly
         $pageTreePidArray = $pid !== null ? [$pid] : $this->getPageTreePidArray();
 
-        if (!empty($GLOBALS['TSFE']->sys_page) && $this->getEnvironmentMode() === 'FE') {
+        if (!empty($GLOBALS['TSFE']->sys_page) && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
 
-            /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_file_reference');
 
@@ -103,7 +66,11 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     $tableName,
                     $queryBuilder
                         ->expr()
-                        ->eq('sys_file_reference.uid_foreign', $queryBuilder->quoteIdentifier($tableName . '.uid')) . ' AND ' . $queryBuilder->expr()->eq('sys_file_reference.tablenames', $queryBuilder->createNamedParameter($tableName, PDO::PARAM_STR))
+                        ->eq('sys_file_reference.uid_foreign', $queryBuilder
+                            ->quoteIdentifier($tableName . '.uid')) . ' AND ' . $queryBuilder
+                        ->expr()
+                        ->eq('sys_file_reference.tablenames', $queryBuilder
+                            ->createNamedParameter($tableName, Connection::PARAM_STR))
                 );
 
                 $queryBuilder
@@ -157,13 +124,17 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 ];
             }
 
-            $result = $this->prepareList(array_merge($referenceUids,
-                $this->getImagesFromFileCollections($tableFieldConfigurationForCollections, $pageTreePidArray)));
+            $result = $this->prepareList(
+                array_merge($referenceUids, $this->getImagesFromFileCollections($tableFieldConfigurationForCollections, $pageTreePidArray, $includeFileCollections)),
+                $extensions,
+                $showEmpty,
+                $tableFieldConfiguration
+            );
 
             usort($result, static function($a, $b) {
                 return strcmp($a['file']->getName(), $b['file']->getName());
             });
-
+            
             return $result;
         }
 
@@ -171,20 +142,12 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
     }
 
     /**
-     * getPageTreePidArray
-     *
-     * Get all pids in current page tree
-     *
-     * @return array
      * @throws Exception
-     * @throws \Doctrine\DBAL\Exception
      */
     private function getPageTreePidArray(): array
     {
-        /** @var int $currentPageUid */
         $currentPageUid = $GLOBALS['TSFE']->id;
 
-        /** @var RootlineUtility $rootlineUtility */
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $currentPageUid, '', null);
 
         $rootPageUid = 0;
@@ -199,18 +162,9 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
     }
 
     /**
-     * Recursively fetch all descendants of a given page
-     *
-     * @param int $id uid of the page
-     * @param int $depth
-     * @param int $begin
-     * @param string $permClause
-     *
-     * @return int|string comma separated list of descendant pages
      * @throws Exception
-     * @throws \Doctrine\DBAL\Exception
      */
-    public function getTreeList(int $id, int $depth, int $begin = 0, string $permClause = '')
+    public function getTreeList(int $id, int $depth, int $begin = 0, string $permClause = ''): float|int|string
     {
         if ($id < 0) {
             $id = abs($id);
@@ -237,7 +191,8 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 ->where(
                     $queryBuilder
                         ->expr()
-                        ->eq('pid', $queryBuilder->createNamedParameter($id, PDO::PARAM_INT))
+                        ->eq('pid', $queryBuilder
+                            ->createNamedParameter($id, Connection::PARAM_INT))
                 )
                 ->orderBy('uid');
 
@@ -267,15 +222,10 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
     }
 
     /**
-     * prepareList
-     *
-     * @param array $references
-     *
-     * @return array
-     * @throws Exception|\Doctrine\DBAL\Exception
      * @throws AspectNotFoundException
+     * @throws Exception
      */
-    private function prepareList(array $references): array
+    private function prepareList(array $references, array $extensions, bool $showEmpty, array $tableFieldConfiguration): array
     {
         $itemList = [];
 
@@ -297,12 +247,11 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 try {
                     $fileReferenceObject = $this->factory->getFileReferenceObject($referenceUid);
                     $fileExtension = $fileReferenceObject->getExtension();
-                    if ($fileReferenceObject->isMissing() === false && in_array($fileExtension, $this->extensions,
-                            true) && file_exists(Environment::getPublicPath() . $fileReferenceObject->getPublicUrl()) === true) {
-                        if ($this->showEmpty === true || ($this->showEmpty === false && $fileReferenceObject->hasProperty('copyright'))) {
+                    if ($fileReferenceObject->isMissing() === false && in_array($fileExtension, $extensions, true) && file_exists(Environment::getPublicPath() . $fileReferenceObject->getPublicUrl()) === true) {
+                        if ($showEmpty === true || ($showEmpty === false && $fileReferenceObject->hasProperty('copyright'))) {
                             $itemList[] = [
                                 'file' => $fileReferenceObject->getOriginalFile(),
-                                'pages' => $this->generateFileReferencePages($fileReferenceObject)
+                                'pages' => $this->generateFileReferencePages($fileReferenceObject, $tableFieldConfiguration)
                             ];
                         }
                     }
@@ -316,24 +265,19 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
     }
 
     /**
-     * generateFileReferenceUris
-     *
-     * @param FileReference $fileReferenceObject
-     *
-     * @return array
-     * @throws Exception|\Doctrine\DBAL\Exception|AspectNotFoundException
+     * @throws AspectNotFoundException
+     * @throws Exception
      */
-    private function generateFileReferencePages(FileReference $fileReferenceObject): array
+    private function generateFileReferencePages(FileReference $fileReferenceObject, array $tableFieldConfiguration): array
     {
         $pages = [];
 
         // Get the table names for regular sys_file_references from the configuration
         $tableNames = [];
-        foreach ($this->tableFieldConfiguration as $configuration) {
+        foreach ($tableFieldConfiguration as $configuration) {
             $tableNames[] = $configuration['tableName'];
         }
 
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_file_reference');
 
@@ -368,21 +312,16 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
     }
 
     /**
-     * getImagesFromFileCollections
-     *
-     * @param array $tableFieldConfigurationForCollections
-     * @param array $pid
-     *
-     * @return array
-     * @throws Exception|\Doctrine\DBAL\Exception|AspectNotFoundException
+     * @throws AspectNotFoundException
+     * @throws Exception
      */
-    private function getImagesFromFileCollections(array $tableFieldConfigurationForCollections, array $pid): array
+    private function getImagesFromFileCollections(array $tableFieldConfigurationForCollections, array $pid, bool $includeFileCollections): array
     {
-        if ($this->includeFileCollections === true) {
+        if ($includeFileCollections === true) {
             $referenceUids = [];
 
-            /** @var QueryBuilder $queryBuilder */
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_reference');
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable('sys_file_reference');
 
             $queryBuilder
                 ->getRestrictions()
@@ -398,8 +337,11 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 'sys_file_collection',
                 $queryBuilder
                     ->expr()
-                    ->eq('sys_file_reference.uid_foreign', $queryBuilder->quoteIdentifier('sys_file_collection.uid')) . ' AND ' . $queryBuilder->expr()->eq('sys_file_reference.tablenames', $queryBuilder->createNamedParameter('sys_file_collection', PDO::PARAM_STR))
-            );
+                    ->eq('sys_file_reference.uid_foreign', $queryBuilder
+                        ->quoteIdentifier('sys_file_collection.uid')) . ' AND ' . $queryBuilder
+                    ->expr()
+                    ->eq('sys_file_reference.tablenames', $queryBuilder
+                        ->createNamedParameter('sys_file_collection', Connection::PARAM_STR)));
 
             foreach ($tableFieldConfigurationForCollections as $configuration) {
                 $queryBuilder->leftJoin(
@@ -408,7 +350,8 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     $configuration['tableName'],
                     $queryBuilder
                         ->expr()
-                        ->inSet($configuration['tableName'] . '.' . $configuration['fieldName'], $queryBuilder->quoteIdentifier('sys_file_collection.uid'))
+                        ->inSet($configuration['tableName'] . '.' . $configuration['fieldName'], $queryBuilder
+                            ->quoteIdentifier('sys_file_collection.uid'))
                 );
 
                 $queryBuilder->orWhere(
@@ -470,20 +413,13 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
     }
 
     /**
-     * getFileCollectionPid
-     *
-     * @param int $uid
-     *
-     * @return int
-     * @throws Exception|\Doctrine\DBAL\Exception
+     * @throws Exception
      */
     private function getFileCollectionPid(int $uid): int
     {
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('sys_file_reference');
 
-        /** @var FrontendRestrictionContainer $frontendRestrictionContainer */
         $frontendRestrictionContainer = GeneralUtility::makeInstance(FrontendRestrictionContainer::class);
 
         $queryBuilder->setRestrictions($frontendRestrictionContainer);
@@ -494,8 +430,8 @@ class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             ->where(
                 $queryBuilder
                     ->expr()
-                    ->eq('uid', $queryBuilder->createNamedParameter($uid, PDO::PARAM_INT))
-            )
+                    ->eq('uid', $queryBuilder
+                        ->createNamedParameter($uid, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
 

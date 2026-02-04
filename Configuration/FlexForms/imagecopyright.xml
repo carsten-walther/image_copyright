@@ -1,0 +1,55 @@
+<T3DataStructure>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<sheetTitle>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general</sheetTitle>
+				<type>array</type>
+				<el>
+					<settings.action>
+						<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode</label>
+						<onChange>reload</onChange>
+						<config>
+							<type>select</type>
+							<renderType>selectSingle</renderType>
+							<items>
+								<numIndex index="1">
+									<numIndex index="0">LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode.index</numIndex>
+									<numIndex index="1">onAllPages</numIndex>
+								</numIndex>
+								<numIndex index="2">
+									<numIndex index="0">LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode.indexOnPage</numIndex>
+									<numIndex index="1">onThisPage</numIndex>
+								</numIndex>
+							</items>
+						</config>
+					</settings.action>
+					<settings.showEmpty>
+						<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.showEmpty</label>
+						<config>
+							<type>check</type>
+						</config>
+					</settings.showEmpty>
+					<settings.showUsedOnPage>
+						<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.showUsedOnPage</label>
+						<config>
+							<type>check</type>
+						</config>
+					</settings.showUsedOnPage>
+					<settings.includeFileCollections>
+						<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.includeFileCollections</label>
+						<config>
+							<type>check</type>
+						</config>
+					</settings.includeFileCollections>
+					<settings.globalCopyright>
+						<label>LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.globalCopyright</label>
+						<config>
+							<type>input</type>
+							<size>12</size>
+						</config>
+					</settings.globalCopyright>
+				</el>
+			</ROOT>
+		</sDEF>
+	</sheets>
+</T3DataStructure>

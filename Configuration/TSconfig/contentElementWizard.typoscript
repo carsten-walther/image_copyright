@@ -1,14 +1,13 @@
 mod.wizards.newContentElement.wizardItems.special {
     elements {
-        image_copyright {
+        imagecopyright_imagecopyright {
             iconIdentifier = tx-imagecopyright
             title = LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:general.title
             description = LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:general.description
             tt_content_defValues {
-                CType = list
-                list_type = imagecopyright_imagecopyright
+                CType = imagecopyright_imagecopyright
             }
         }
     }
-    show := addToList(image_copyright)
+    show := addToList(imagecopyright_imagecopyright)
 }

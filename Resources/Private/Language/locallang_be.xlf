@@ -4,7 +4,7 @@
 		<header/>
 		<body>
 			<trans-unit id="general.title">
-				<source>Image copyrights</source>
+				<source>Image copyright</source>
 			</trans-unit>
 			<trans-unit id="general.description">
 				<source>Shows all images used in page tree or single page with optional copyright information (alternatively display a global copyright information).</source>
