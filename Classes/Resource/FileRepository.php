@@ -134,7 +134,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             usort($result, static function($a, $b) {
                 return strcmp($a['file']->getName(), $b['file']->getName());
             });
-            
+
             return $result;
         }
 
@@ -303,8 +303,13 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
 
         foreach ($results as $result) {
-            if (in_array($result['tablenames'], $tableNames, true)) {
-                $pages[] = $pageRepository->getPage($result['pid']);
+            if (
+                !$result[$GLOBALS['TCA'][$result['tablenames']]['ctrl']['delete']] &&
+                !$result[$GLOBALS['TCA'][$result['tablenames']]['ctrl']['enablecolumns']['disabled']]
+            ) {
+                if (in_array($result['tablenames'], $tableNames, true)) {
+                    $pages[] = $pageRepository->getPage($result['pid']);
+                }
             }
         }
 
