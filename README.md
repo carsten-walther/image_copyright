@@ -14,17 +14,61 @@ About the extension
 -------------------
 This extension will add copyright information plugins to your TYPO3 website.
 
+How to install?
+---------------
+Just call composer req carsten-walther/image_copyright or install the extension via the extension manager.
+
 How to use it?
 --------------
-...
+Add TypoScript Configuration to your root template. Then add the content element to your page and select needed options.
 
 Configuration
 -------------
-...
+Install image_copyright in your TYPO3 installation. Modify TypoScript settings if needed.
 
-What's next?
-------------
-...
+Constants:
+
+```
+plugin.tx_imagecopyright {
+    settings {
+        extensions = jpg, jpeg, png, gif
+        showEmpty = 1
+        showUsedOnPage = 1
+        includeFileCollections = 1
+        globalCopyright = Example Company
+    }
+}
+```
+
+Setup:
+
+```
+plugin.tx_imagecopyright {
+    settings {
+        tableFieldConfiguration {
+            10 {
+                extension = core
+                tableName = pages
+            }
+            20 {
+                extension = core
+                tableName = tt_content
+            }
+            30 {
+                extension = news
+                tableName = tx_news_domain_model_news
+            }
+        }
+        tableFieldConfigurationForCollections {
+            10 {
+                extension = core
+                tableName = tt_content
+                fieldName = file_collections
+            }
+        }
+    }
+}
+```
 
 Sponsoring
 ----------
