@@ -125,12 +125,17 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 ];
             }
 
+            $fileCollectionImages = [];
+            if ((bool)$settings['includeFileCollections']) {
+                $fileCollectionImages = $this->getImagesFromFileCollections($tableFieldConfigurationForCollections, $pageTreePidArray, $includeFileCollections);
+            }
+
             $result = $this->prepareList(
-                array_merge($referenceUids, $this->getImagesFromFileCollections($tableFieldConfigurationForCollections, $pageTreePidArray, $includeFileCollections)),
+                array_merge($referenceUids, $fileCollectionImages),
                 $extensions,
                 $showEmpty,
                 $tableFieldConfiguration,
-                $settings['showUsedOnPage']
+                (bool)$settings['showUsedOnPage']
             );
 
             usort($result, static function($a, $b) {
