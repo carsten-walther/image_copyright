@@ -93,7 +93,8 @@ class ImageCopyrightController extends ActionController
         $this->view->assignMultiple([
             'pagination' => $pagination,
             'paginator' => $paginator,
-            'images' => $images
+            'images' => $images,
+            'data' => $this->cObjectData->data,
         ]);
 
         return $this->htmlResponse();
