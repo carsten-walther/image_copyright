@@ -255,7 +255,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                     $fileReferenceObject = $this->factory->getFileReferenceObject($referenceUid);
                     $fileExtension = $fileReferenceObject->getExtension();
                     if ($fileReferenceObject->isMissing() === false && in_array($fileExtension, $extensions, true) && file_exists(Environment::getPublicPath() . $fileReferenceObject->getPublicUrl()) === true) {
-                        if ($showEmpty === true || ($showEmpty === false && !empty($fileReferenceObject->hasProperty('copyright')))) {
+                        if ($showEmpty === true || ($showEmpty === false && $fileReferenceObject->hasProperty('copyright') && !empty($fileReferenceObject->getProperty('copyright')))) {
                             $pages = null;
                             if ($showUsedOnPage) {
                                 $pages = $this->generateFileReferencePages($fileReferenceObject, $tableFieldConfiguration);
