@@ -47,6 +47,25 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
         // Get all PIDs in a page tree if no pid is given explicitly
         $pageTreePidArray = $pid !== null ? [$pid] : $this->getPageTreePidArray();
 
+        // Generate list of exclude Pids
+        $excludePidsArray = [];
+
+        $excludePids = GeneralUtility::trimExplode(',', $settings['excludePids'], true);
+        if (is_array($excludePids)) $excludePidsArray = $excludePids;
+
+        if ($excludePidsRecursive = GeneralUtility::trimExplode(',', $settings['excludePidsRecursive'], true)) {
+            $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+            if ($pages = $pageRepository->getPageIdsRecursive($excludePidsRecursive, 99)) {
+                $excludePidsArray = [...$pages];
+            }
+        }
+
+        foreach ($pageTreePidArray as $key => $value) {
+            if (in_array((int)$value, $excludePidsArray)) {
+                unset($pageTreePidArray[$key]);
+            }
+        }
+
         if (!empty($GLOBALS['TSFE']->sys_page) && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -57,7 +76,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 ->removeAll();
 
             $queryBuilder
-                ->select('sys_file_reference.uid', 'sys_file_reference.uid_local')
+                ->select('sys_file_reference.uid', 'sys_file_reference.pid', 'sys_file_reference.uid_local')
                 ->from('sys_file_reference');
 
             foreach ($tableNames as $tableName) {
@@ -151,9 +170,9 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
     /**
      * @throws Exception
      */
-    private function getPageTreePidArray(): array
+    private function getPageTreePidArray(int $uid = null): array
     {
-        $currentPageUid = $GLOBALS['TSFE']->id;
+        $currentPageUid = $uid != null ? $GLOBALS['TSFE']->id : $GLOBALS['TSFE']->id;
 
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $currentPageUid, '', null);
 

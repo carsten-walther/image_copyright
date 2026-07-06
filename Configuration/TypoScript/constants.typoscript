@@ -15,5 +15,7 @@ plugin.tx_imagecopyright {
         globalCopyright = Example Company
         itemsPerPage = 10
         maximumLinks = 15
+        excludePids =
+        excludePidsRecursive =
     }
 }
