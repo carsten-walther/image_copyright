@@ -8,11 +8,11 @@ plugin.tx_imagecopyright {
         layoutRootPath = EXT:image_copyright/Resources/Private/Layouts/
     }
     settings {
-        extensions = jpg, jpeg, png, gif
+        extensions =
         showEmpty = 1
         showUsedOnPage = 1
         includeFileCollections = 1
-        globalCopyright = Example Company
+        globalCopyright =
         itemsPerPage = 10
         maximumLinks = 15
         excludePids =

@@ -3,6 +3,7 @@
 namespace CarstenWalther\ImageCopyright\Resource;
 
 use Doctrine\DBAL\Exception;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Core\Environment;
@@ -17,11 +18,20 @@ use TYPO3\CMS\Core\Resource\Exception\ResourceDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use function file_exists;
 use function in_array;
 
+#[Autoconfigure(public: true)]
 readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
 {
+    protected RequestInterface $request;
+
+    public function setRequest(RequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
     /**
      * @throws AspectNotFoundException
      * @throws Exception
@@ -50,8 +60,8 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
         // Generate list of exclude Pids
         $excludePidsArray = [];
 
-        $excludePids = GeneralUtility::trimExplode(',', $settings['excludePids'], true);
-        if (is_array($excludePids)) $excludePidsArray = $excludePids;
+        $excludePids = GeneralUtility::intExplode(',', $settings['excludePids'], true);
+        if (!empty($excludePids)) $excludePidsArray = $excludePids;
 
         if ($excludePidsRecursive = GeneralUtility::trimExplode(',', $settings['excludePidsRecursive'], true)) {
             $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
@@ -66,7 +76,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             }
         }
 
-        if (!empty($GLOBALS['TSFE']->sys_page) && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('sys_file_reference');
@@ -148,7 +158,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             if ((bool)$settings['includeFileCollections']) {
                 $fileCollectionImages = $this->getImagesFromFileCollections($tableFieldConfigurationForCollections, $pageTreePidArray, $includeFileCollections);
             }
-
+            
             $result = $this->prepareList(
                 array_merge($referenceUids, $fileCollectionImages),
                 $extensions,
@@ -170,10 +180,9 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
     /**
      * @throws Exception
      */
-    private function getPageTreePidArray(int $uid = null): array
+    private function getPageTreePidArray(): array
     {
-        $currentPageUid = $uid != null ? $GLOBALS['TSFE']->id : $GLOBALS['TSFE']->id;
-
+        $currentPageUid = $this->request->getAttribute('frontend.page.information')->getId();
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $currentPageUid, '', null);
 
         $rootPageUid = 0;
@@ -184,13 +193,13 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
             }
         }
 
-        return explode(',', $this->getTreeList($rootPageUid, 256));
+        return explode(',', $this->getPageTreeListByPageUid($rootPageUid, 256));
     }
 
     /**
      * @throws Exception
      */
-    public function getTreeList(int $id, int $depth, int $begin = 0, string $permClause = ''): float|int|string
+    public function getPageTreeListByPageUid(int $id, int $depth, int $begin = 0, string $permClause = ''): float|int|string
     {
         if ($id < 0) {
             $id = abs($id);
@@ -235,7 +244,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 }
 
                 if ($depth > 1) {
-                    $theSubList = $this->getTreeList($row['uid'], $depth - 1, $begin - 1, $permClause);
+                    $theSubList = $this->getPageTreeListByPageUid($row['uid'], $depth - 1, $begin - 1, $permClause);
                     if (!empty($theList) && !empty($theSubList) && ($theSubList[0] !== ',')) {
                         $theList .= ',';
                     }
@@ -291,7 +300,7 @@ readonly class FileRepository extends \TYPO3\CMS\Core\Resource\FileRepository
                 }
             }
         }
-
+        
         return $itemList;
     }
 

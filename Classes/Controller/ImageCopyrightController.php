@@ -15,7 +15,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 class ImageCopyrightController extends ActionController
 {
-    protected ?ContentObjectRenderer $cObjectData = null;
+    protected array $cObjectData = [];
     protected array $tableFieldConfiguration = [];
     protected bool $showEmpty = true;
     protected array $extensions = [];
@@ -28,7 +28,7 @@ class ImageCopyrightController extends ActionController
 
     public function initializeAction(): void
     {
-        $this->cObjectData = $this->request->getAttribute('currentContentObject');
+        $this->cObjectData = $this->request->getAttribute('currentContentObject')->data;
 
         // get table field configuration
         $tempTableFieldConfiguration = $this->settings['tableFieldConfiguration'];
@@ -40,7 +40,7 @@ class ImageCopyrightController extends ActionController
             }
         }
 
-        $this->extensions = GeneralUtility::trimExplode(',', $this->settings['extensions'], true);
+        $this->extensions = GeneralUtility::trimExplode(',', $this->settings['extensions'] ?: $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], true);
         $this->showEmpty = (bool)$this->settings['showEmpty'];
         $this->includeFileCollections = (bool)$this->settings['includeFileCollections'];
 
@@ -54,6 +54,8 @@ class ImageCopyrightController extends ActionController
                 }
             }
         }
+
+        $this->fileRepository->setRequest($this->request);
 
         parent::initializeAction();
     }
@@ -70,7 +72,7 @@ class ImageCopyrightController extends ActionController
                 $pid = null;
                 break;
             case 'onThisPage':
-                $pid = $this->cObjectData->data['pid'];
+                $pid = $this->cObjectData['pid'];
                 break;
         }
 
@@ -94,7 +96,7 @@ class ImageCopyrightController extends ActionController
             'pagination' => $pagination,
             'paginator' => $paginator,
             'images' => $images,
-            'data' => $this->cObjectData->data,
+            'data' => $this->cObjectData,
         ]);
 
         return $this->htmlResponse();

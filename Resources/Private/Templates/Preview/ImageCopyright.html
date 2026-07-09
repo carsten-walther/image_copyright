@@ -1,0 +1,50 @@
+<f:variable name="path" value="sDEF/settings"/>
+
+<div>
+    <strong>
+        <f:translate key="LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode" />:
+    </strong>
+    <f:if condition="{record.pi_flexform.{path}.action} == 'onAllPages'">
+        <f:translate key="LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode.index" />
+    </f:if>
+    <f:if condition="{record.pi_flexform.{path}.action} == 'onThisPage'">
+        <f:translate key="LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.mode.indexOnPage" />
+    </f:if>
+</div>
+
+<div>
+    <strong>
+        <f:translate key="LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.showEmpty" />:
+    </strong>
+    <f:if condition="{record.pi_flexform.{path}.showEmpty}">
+        <f:then>true</f:then>
+        <f:else>false</f:else>
+    </f:if>
+</div>
+
+<div>
+    <strong>
+        <f:translate key="LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.showUsedOnPage" />:
+    </strong>
+    <f:if condition="{record.pi_flexform.{path}.showUsedOnPage}">
+        <f:then>true</f:then>
+        <f:else>false</f:else>
+    </f:if>
+</div>
+
+<div>
+    <strong>
+        <f:translate key="LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.includeFileCollections" />:
+    </strong>
+    <f:if condition="{record.pi_flexform.{path}.includeFileCollections}">
+        <f:then>true</f:then>
+        <f:else>false</f:else>
+    </f:if>
+</div>
+
+<div>
+    <strong>
+        <f:translate key="LLL:EXT:image_copyright/Resources/Private/Language/locallang_be.xlf:flexforms.tabs.general.globalCopyright" />:
+    </strong>
+    {record.pi_flexform.{path}.globalCopyright}
+</div>

@@ -4,7 +4,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Image Copyright',
     'description' => 'Add copyright information of all images to your site',
     'category' => 'misc',
-    'version' => '13.4.12',
+    'version' => '14.3.0',
     'state' => 'stable',
     'uploadfolder' => 0,
     'createDirs' => '',
@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'walther.carsten@web.de',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.1-13.4.99'
+            'typo3' => '13.4.1-14.3.99'
         ]
     ],
     'autoload' => [
